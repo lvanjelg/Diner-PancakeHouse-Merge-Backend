@@ -1,6 +1,7 @@
 package edu.iu.habahram.DinerPancakeHouseMerge.model;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class PancakeHouseMenu {
@@ -41,6 +42,9 @@ public class PancakeHouseMenu {
         return menuItems;
     }
 
+    public Iterator createIterator(){
+        return new PancakeHouseIterator(menuItems);
+    }
 
 
     public String toString() {

@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @RestController
@@ -22,9 +24,15 @@ public class MergerController {
     }
     @GetMapping
     public List<MenuItem> get(){
-        List<MenuItem> ret = pancakeHouseRepository.getTheMenu();
-        MenuItem[] items = dinerRepository.getTheMenu();
-        ret.addAll(List.of(items));
-        return ret;
+        Iterator dinerIterator = dinerRepository.createIterator();
+        Iterator pancakeIterator = pancakeHouseRepository.createIterator();
+        List<MenuItem> items = new ArrayList<>();
+        while(pancakeIterator.hasNext()){
+            items.add((MenuItem) pancakeIterator.next());
+        }
+        while(dinerIterator.hasNext()){
+            items.add((MenuItem) dinerIterator.next());
+        }
+        return items;
     }
 }
