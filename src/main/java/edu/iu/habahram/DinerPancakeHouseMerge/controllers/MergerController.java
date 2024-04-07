@@ -1,8 +1,11 @@
 package edu.iu.habahram.DinerPancakeHouseMerge.controllers;
 
+import edu.iu.habahram.DinerPancakeHouseMerge.model.DinerMenu;
+import edu.iu.habahram.DinerPancakeHouseMerge.model.Menu;
 import edu.iu.habahram.DinerPancakeHouseMerge.model.MenuItem;
 import edu.iu.habahram.DinerPancakeHouseMerge.repository.CafeRepository;
 import edu.iu.habahram.DinerPancakeHouseMerge.repository.DinerRepository;
+import edu.iu.habahram.DinerPancakeHouseMerge.repository.MergerRepository;
 import edu.iu.habahram.DinerPancakeHouseMerge.repository.PancakeHouseRepository;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,28 +20,20 @@ import java.util.List;
 @CrossOrigin
 @RequestMapping("/merger")
 public class MergerController {
-    PancakeHouseRepository pancakeHouseRepository;
-    DinerRepository dinerRepository;
-    CafeRepository cafeRepository;
-    public MergerController(PancakeHouseRepository pancakeHouseRepository, DinerRepository dinerRepository, CafeRepository cafeRepository){
-        this.pancakeHouseRepository = pancakeHouseRepository;
-        this.dinerRepository = dinerRepository;
-        this.cafeRepository = cafeRepository;
+    MergerRepository mergerRepository;
+    public MergerController(MergerRepository mergerRepository){
+        this.mergerRepository = mergerRepository;
     }
     @GetMapping
     public List<MenuItem> get(){
-        Iterator dinerIterator = dinerRepository.createIterator();
-        Iterator pancakeIterator = pancakeHouseRepository.createIterator();
-        Iterator cafeIterator = cafeRepository.createIterator();
+        Iterator mergerIterator = mergerRepository.getTheMenus().iterator();
         List<MenuItem> items = new ArrayList<>();
-        while(pancakeIterator.hasNext()){
-            items.add((MenuItem) pancakeIterator.next());
-        }
-        while(dinerIterator.hasNext()){
-            items.add((MenuItem) dinerIterator.next());
-        }
-        while(cafeIterator.hasNext()){
-            items.add((MenuItem) cafeIterator.next());
+        while(mergerIterator.hasNext()){
+            Menu temp = (Menu) mergerIterator.next();
+            Iterator tempIterator = temp.createIterator();
+            while(tempIterator.hasNext()){
+                items.add((MenuItem) tempIterator.next());
+            }
         }
         return items;
     }
