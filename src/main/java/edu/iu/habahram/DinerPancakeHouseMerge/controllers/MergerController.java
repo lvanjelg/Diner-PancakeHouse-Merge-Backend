@@ -1,8 +1,7 @@
 package edu.iu.habahram.DinerPancakeHouseMerge.controllers;
 
-import edu.iu.habahram.DinerPancakeHouseMerge.model.MenuItem;
-import edu.iu.habahram.DinerPancakeHouseMerge.repository.DinerRepository;
-import edu.iu.habahram.DinerPancakeHouseMerge.repository.PancakeHouseRepository;
+import edu.iu.habahram.DinerPancakeHouseMerge.model.MenuItemRecord;
+import edu.iu.habahram.DinerPancakeHouseMerge.repository.MergerRepository;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,17 +13,15 @@ import java.util.List;
 @CrossOrigin
 @RequestMapping("/merger")
 public class MergerController {
-    PancakeHouseRepository pancakeHouseRepository;
-    DinerRepository dinerRepository;
-    public MergerController(PancakeHouseRepository pancakeHouseRepository, DinerRepository dinerRepository){
-        this.pancakeHouseRepository = pancakeHouseRepository;
-        this.dinerRepository = dinerRepository;
+    MergerRepository mergerRepository;
+
+    public MergerController(MergerRepository mergerRepository) {
+        this.mergerRepository = mergerRepository;
     }
+
     @GetMapping
-    public List<MenuItem> get(){
-        List<MenuItem> ret = pancakeHouseRepository.getTheMenu();
-        MenuItem[] items = dinerRepository.getTheMenu();
-        ret.addAll(List.of(items));
-        return ret;
+    public List<MenuItemRecord> get() {
+        List<MenuItemRecord> items = mergerRepository.getTheMenuItems();
+        return items;
     }
 }
